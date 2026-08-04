@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-        
+
+
+        <!--App title and settings-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,16 +26,88 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Temporary Text"
-                style="bold"/>
+                android:text="@string/app_name"
+                style="bold"
+                android:textColor="@color/text_primary"/>
             
             <ImageButton
                 android:id="@+id/btnSettings"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
-
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/settings"
+                android:src="@android:drawable/ic_menu_manage"/>
         </LinearLayout>
+
+        <!--Image preview-->
         
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+            
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="#EDEAE3"
+                    android:contentDescription="@string/placeholder_hint"/>
+                
+                <TextView
+                    android:id="@+id/placeholderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="@string/placeholder_hint"
+                    android:textColor="@color/text_secondary"/>
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--Choose a picture either with gallery or camera-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:weightSum="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPickImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="66dp"
+                android:text="@string/pick_image"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTakePhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="@string/take_photo"/>
+        </LinearLayout>
+
+
+        <!--Send image to AI for analysis-->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAnalyse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/accent"
+            android:enabled="false"
+            android:text="@string/analyze"/>
     </LinearLayout>
 
 

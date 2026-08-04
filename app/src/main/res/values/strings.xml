@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Imagelyzer</string>
+    <string name="pick_image">Choose Photo</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="analyze">Analyze Image</string>
+    <string name="settings">API Key Settings</string>
+    <string name="placeholder_hint">Pick or take a photo of a place, landmark, or object to learn about it</string>
+
 </resources>
