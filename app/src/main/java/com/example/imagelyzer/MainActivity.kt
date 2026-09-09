@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Message
 import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.view.View
@@ -20,7 +21,7 @@ import kotlinx.coroutines.MainScope
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
-    private lateint var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     private val scope = MainScope()
 
@@ -73,11 +74,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchCamera(){
-        val photoFile = File.createTempFile("photo_", ".jpg", cacheDir.also{File(it, "images").mkdirs()}.let {File(it, "images")})
-        cameraPhotoUri = FileProvider.getUriForFile((this), "$packageName.fileprovider", photoFile)
-        cameraLauncher.launch(cameraPhotoUri)
+    private fun launchCamera() {
+        val photoFile = File.createTempFile(
+            "photo_", ".jpg",
+            cacheDir.also { File(it, "images").mkdirs() }.let { File(it, "images") }
+        )
+        val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", photoFile)
+        cameraPhotoUri = uri
+        cameraLauncher.launch(uri)
     }
+
 
     private fun loadBitmapFromUri(uri: Uri){
         val bitmap = contentResolver.openInputStream(uri)?.use {
@@ -117,6 +123,42 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun setLoading(loading: Boolean){
+        binding.progressBar.visibility = if(loading) View.VISIBLE else View.GONE
+        binding.btnAnalyse.isEnabled = !loading
+    }
+
+    private fun showResults(result: AnalysisResult){
+        binding.errorText.visibility = View.GONE
+
+        binding.textLocation.text = result.location
+        binding.cardLocation.visibility = View.VISIBLE
+
+        binding.textHistory.text = result.history
+        binding.cardHistory.visibility = View.VISIBLE
+
+        binding.curiositiesContainer.removeAllViews()
+        result.curiosities.forEachIndexed { index, fact ->
+            val textView = TextView(this)
+            textView.text = "${index + 1}. $fact"
+            textView.setTextColor(getColor(R.color.text_primary))
+            textView.setPadding(0, 8, 0, 8)
+            binding.curiositiesContainer.addView(textView)
+        }
+        binding.cardCuriosities.visibility = View.VISIBLE
+
+    }
+
+    private fun hideResults(){
+        binding.cardLocation.visibility = View.GONE
+        binding.cardHistory.visibility = View.GONE
+        binding.cardCuriosities.visibility = View.GONE
+    }
+    private fun showError(message: String){
+        binding.errorText.text = message
+        binding.errorText.visibility = View.VISIBLE
     }
 
 
